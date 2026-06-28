@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alaa Masoud — AI Content Strategist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --surface: #111111;
+    --surface2: #181818;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-dim: #7A6228;
+    --white: #F0EDE8;
+    --muted: #888888;
+    --border: rgba(201,168,76,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-name span {
+    color: var(--gold);
+    position: relative;
+  }
+
+  .hero-name span::after {
+    content: '';
+    position: absolute;
+    bottom: 4px; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .hero-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    min-height: 2rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-title .typed-text { color: var(--gold-light); font-weight: 500; }
+  .hero-title .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    background: var(--gold);
+    margin-left: 3px;
+    vertical-align: middle;
+    animation: blink 1s infinite;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .stat-divider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .btn-primary {
+    padding: 0.85rem 2.2rem;
+    background: var(--gold);
+    color: var(--black);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.25);
+  }
+
+  .btn-outline {
+    padding: 0.85rem 2.2rem;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.06);
+    transform: translateY(-2px);
+  }
+
+  /* ── GOLD LINE DIVIDER ── */
+  .gold-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 0 auto 1rem;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 3rem;
+    line-height: 1.2;
+  }
+
+  /* ── ABOUT ── */
+  #about .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong { color: var(--gold-light); font-weight: 500; }
+
+  .about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .highlight-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .highlight-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+  }
+
+  .highlight-card:hover { border-color: var(--gold-dim); }
+
+  .highlight-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .highlight-card p {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: transparent; }
+
+  .skills-category {
+    margin-bottom: 2.5rem;
+  }
+
+  .skills-category-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .skill-tag {
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 0.8rem;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .skill-tag:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.06);
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .project-card:hover {
+    border-color: var(--gold-dim);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .project-card:hover::after { opacity: 1; }
+
+  .project-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .project-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--white);
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .project-card p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-link {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: gap 0.3s;
+  }
+
+  .project-link:hover { gap: 0.7rem; }
+
+  /* ── CHANNEL ── */
+  .channel-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .channel-stat {
+    background: var(--surface);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .channel-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .channel-stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .series-card {
+    padding: 1.4rem;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    transition: border-color 0.3s;
+  }
+
+  .series-card:hover { border-color: var(--gold-dim); }
+
+  .series-card h4 {
+    font-size: 0.88rem;
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .series-card p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 2.5rem;
+    margin-left: 1rem;
+  }
+
+  .edu-item {
+    position: relative;
+    padding-bottom: 2.5rem;
+  }
+
+  .edu-item:last-child { padding-bottom: 0; }
+
+  .edu-item::before {
+    content: '';
+    position: absolute;
+    left: -2.85rem;
+    top: 0.35rem;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--gold);
+    background: var(--black);
+    border-radius: 50%;
+  }
+
+  .edu-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--white);
+    margin-bottom: 0.2rem;
+  }
+
+  .edu-school {
+    font-size: 0.88rem;
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-note {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── CERTIFICATIONS ── */
+  .cert-group { margin-bottom: 2.5rem; }
+
+  .cert-group-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .cert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  .cert-item::before {
+    content: '◆';
+    color: var(--gold-dim);
+    font-size: 0.5rem;
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  /* ── CONTACT ── */
+  #contact {
+    text-align: center;
+  }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .contact-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    padding: 1.5rem 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: all 0.3s;
+    min-width: 150px;
+  }
+
+  .contact-link:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(201,168,76,0.1);
+  }
+
+  .contact-link-icon {
+    font-size: 1.5rem;
+  }
+
+  .contact-link-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .contact-link-value {
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── GOLD GLOW BACKGROUND ── */
+  .glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    transition: left 0.8s ease, top 0.8s ease;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #about .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .channel-stats { grid-template-columns: 1fr 1fr; }
+    .hero-cta { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow" id="glow"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">AM</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#channel">Channel</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-eyebrow">Damascus, Syria — Available for Remote Work</p>
+  <h1 class="hero-name">Alaa <span>Masoud</span></h1>
+  <p class="hero-title">
+    <span class="typed-text" id="typed"></span><span class="cursor"></span>
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">6,200+</div>
+      <div class="stat-label">Followers</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">120+</div>
+      <div class="stat-label">Posts / Month</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Platforms</div>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <a href="mailto:alaamassoud2022@gmail.com" class="btn-primary">Get In Touch</a>
+    <a href="#projects" class="btn-outline">View Work</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-eyebrow">Who I Am</p>
+    <h2 class="section-title">Bridging AI & Arabic Media</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I am an <strong>AI Content Strategist and Digital Media Specialist</strong> based in Damascus, Syria — dedicated to making artificial intelligence genuinely understandable for Arabic-speaking audiences.</p>
+        <p>For the past two years, I have built an Arabic-language AI content channel from the ground up, publishing daily across four platforms and developing over ten original content series. My work sits at the intersection of <strong>technology, storytelling, and media psychology</strong>.</p>
+        <p>With a Master's degree focused on AI and fake news, and five years of journalism experience across Syria, the UAE, and Lebanon, I bring both academic rigor and practical editorial experience to every project I take on.</p>
+      </div>
+      <div class="about-highlights">
+        <div class="highlight-card">
+          <h4>Master's in Media Psychology</h4>
+          <p>University of Damascus — Thesis on AI & Fake News. Fully certified, 2025.</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Journalism Across 3 Countries</h4>
+          <p>Syria, UAE, and Lebanon — four media outlets covering news, sports, and features.</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Anthropic Academy Certified</h4>
+          <p>Claude 101, Claude Code, AI Fluency — among the few Arabic creators with this credential.</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Arabic AI Content Pioneer</h4>
+          <p>Building a trusted reference for Arabic speakers navigating the world of artificial intelligence.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <p class="section-eyebrow">Expertise</p>
+    <h2 class="section-title">What I Work With</h2>
+
+    <div class="skills-category">
+      <p class="skills-category-title">AI Tools & Platforms</p>
+      <div class="skills-grid">
+        <span class="skill-tag">ChatGPT</span>
+        <span class="skill-tag">Claude</span>
+        <span class="skill-tag">Gemini</span>
+        <span class="skill-tag">DeepSeek</span>
+        <span class="skill-tag">Midjourney</span>
+        <span class="skill-tag">Kling AI</span>
+        <span class="skill-tag">ElevenLabs</span>
+        <span class="skill-tag">Runway</span>
+        <span class="skill-tag">Veo3</span>
+        <span class="skill-tag">Manus</span>
+        <span class="skill-tag">NotebookLM</span>
+        <span class="skill-tag">Recraft</span>
+        <span class="skill-tag">Pixverse</span>
+        <span class="skill-tag">Google Flow</span>
+        <span class="skill-tag">Suno AI</span>
+        <span class="skill-tag">Genspark</span>
+      </div>
+    </div>
+
+    <div class="skills-category">
+      <p class="skills-category-title">Content & Media</p>
+      <div class="skills-grid">
+        <span class="skill-tag">Content Strategy</span>
+        <span class="skill-tag">Serialized Storytelling</span>
+        <span class="skill-tag">Hook Copywriting</span>
+        <span class="skill-tag">Audience Psychology</span>
+        <span class="skill-tag">News Writing</span>
+        <span class="skill-tag">Article Editing</span>
+        <span class="skill-tag">SEO Writing</span>
+        <span class="skill-tag">Fact-Checking</span>
+        <span class="skill-tag">Press Releases</span>
+        <span class="skill-tag">Investigative Journalism</span>
+      </div>
+    </div>
+
+    <div class="skills-category">
+      <p class="skills-category-title">Digital & Technical</p>
+      <div class="skills-grid">
+        <span class="skill-tag">GitHub Pages</span>
+        <span class="skill-tag">HTML & CSS</span>
+        <span class="skill-tag">Adobe Premiere</span>
+        <span class="skill-tag">Microsoft Office</span>
+        <span class="skill-tag">Social Media Management</span>
+        <span class="skill-tag">Content Scheduling</span>
+        <span class="skill-tag">Analytics</span>
+        <span class="skill-tag">Digital Marketing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <p class="section-eyebrow">Selected Work</p>
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <p class="project-number">PROJECT 01</p>
+        <h3>AI Tools Analytics Dashboard</h3>
+        <p>An interactive web dashboard comparing AI tools across performance metrics, built with HTML and Chart.js. Demonstrates data visualization, AI-assisted development, and portfolio-grade presentation skills.</p>
+        <a href="https://alaamasoud20237-web.github.io" target="_blank" class="project-link">View Live →</a>
+      </div>
+
+      <div class="project-card">
+        <p class="project-number">PROJECT 02</p>
+        <h3>AACEF — Arabic AI Content Evaluation Framework</h3>
+        <p>A structured evaluation framework for Arabic-language AI content, published as a GitHub Pages portfolio project. Combines media psychology principles with practical content quality metrics.</p>
+        <a href="https://alaamasoud20237-web.github.io" target="_blank" class="project-link">View Portfolio →</a>
+      </div>
+
+      <div class="project-card">
+        <p class="project-number">PROJECT 03</p>
+        <h3>Arabic AI Content Channel</h3>
+        <p>Founded and operate a daily Arabic-language AI content channel across Facebook, Instagram, X, and Threads. 6,200+ followers, 10+ original series formats, 120+ posts per month.</p>
+        <a href="https://facebook.com" target="_blank" class="project-link">View Channel →</a>
+      </div>
+
+      <div class="project-card">
+        <p class="project-number">PROJECT 04</p>
+        <h3>Master's Thesis — AI & Fake News</h3>
+        <p>Academic research on the role of artificial intelligence in combating fake news, conducted as a field study on media students at the University of Damascus. Fully certified, 2025.</p>
+        <span class="project-link" style="cursor:default; opacity:0.5;">Damascus University, 2025</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CHANNEL -->
+<section id="channel">
+  <div class="reveal">
+    <p class="section-eyebrow">Content Creation</p>
+    <h2 class="section-title">The Arabic AI Channel</h2>
+
+    <div class="channel-stats">
+      <div class="channel-stat">
+        <div class="channel-stat-num">6,200+</div>
+        <div class="channel-stat-label">Total Followers</div>
+      </div>
+      <div class="channel-stat">
+        <div class="channel-stat-num">120+</div>
+        <div class="channel-stat-label">Posts / Month</div>
+      </div>
+      <div class="channel-stat">
+        <div class="channel-stat-num">32K+</div>
+        <div class="channel-stat-label">Challenge Views</div>
+      </div>
+      <div class="channel-stat">
+        <div class="channel-stat-num">4</div>
+        <div class="channel-stat-label">Platforms Daily</div>
+      </div>
+    </div>
+
+    <div class="series-grid">
+      <div class="series-card">
+        <h4>رحلة سامي مع الذكاء الاصطناعي</h4>
+        <p>30-episode narrative series following a fictional Syrian AI engineer — storytelling meets technology education.</p>
+      </div>
+      <div class="series-card">
+        <h4>محكمة الـ Prompt</h4>
+        <p>24-episode courtroom-style prompt engineering tutorial series — making prompt writing accessible and entertaining.</p>
+      </div>
+      <div class="series-card">
+        <h4>لو عدت بالزمن</h4>
+        <p>Time-travel interview series featuring historical philosophers and semioticians discussing AI in their own context.</p>
+      </div>
+      <div class="series-card">
+        <h4>معركة الذكاء الاصطناعي</h4>
+        <p>Head-to-head AI tool comparison posts helping Arabic audiences choose the right tool for each task.</p>
+      </div>
+      <div class="series-card">
+        <h4>إنسان ولا AI؟</h4>
+        <p>Weekly interactive series testing whether content was human-made or AI-generated — driving strong engagement.</p>
+      </div>
+      <div class="series-card">
+        <h4>Tutorial Reels — النتيجة أولاً</h4>
+        <p>Saturday educational Reels using the Result-First format — showing the output before the process to maximize watch time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="reveal">
+    <p class="section-eyebrow">Academic Background</p>
+    <h2 class="section-title">Education & Certifications</h2>
+
+    <div class="edu-timeline" style="margin-bottom: 4rem;">
+      <div class="edu-item">
+        <p class="edu-date">2023 — 2025</p>
+        <h3 class="edu-degree">Master's Degree — Media Psychology</h3>
+        <p class="edu-school">University of Damascus, Syria</p>
+        <p class="edu-note">Thesis: The Role of AI in Combating Fake News. Fully certified and validated.</p>
+      </div>
+      <div class="edu-item">
+        <p class="edu-date">2019 — 2023</p>
+        <h3 class="edu-degree">Bachelor's Degree — Media & Communication</h3>
+        <p class="edu-school">Syrian Virtual University — Public Relations Specialization</p>
+        <p class="edu-note">Graduation project received highest score: 88.30 / 100</p>
+      </div>
+    </div>
+
+    <div class="cert-group">
+      <p class="cert-group-title">Anthropic Academy — AI Specialization</p>
+      <div class="cert-list">
+        <div class="cert-item">Claude 101 — Anthropic Academy</div>
+        <div class="cert-item">Claude Code 101 — Anthropic Academy</div>
+        <div class="cert-item">Claude Code in Action — Anthropic Academy</div>
+        <div class="cert-item">AI Fluency: Framework & Foundations — Anthropic Academy</div>
+        <div class="cert-item">AI Fluency: Key Terminology — Anthropic Academy</div>
+        <div class="cert-item">HP LIFE AI Training Certificates</div>
+      </div>
+    </div>
+
+    <div class="cert-group">
+      <p class="cert-group-title">Journalism & Media</p>
+      <div class="cert-list">
+        <div class="cert-item">Al-Jazeera Media Institute — TV News Reporting, Editing, Journalistic Safety, Effective Online Presence</div>
+        <div class="cert-item">ARIJ Academy — Fact-Checking, Source Protection, Information Verification (with Meta)</div>
+        <div class="cert-item">Reuters — Introduction to Digital Journalism</div>
+        <div class="cert-item">OPEN Network — English for Journalism MOOC 2022</div>
+      </div>
+    </div>
+
+    <div class="cert-group">
+      <p class="cert-group-title">Digital Marketing & Skills</p>
+      <div class="cert-list">
+        <div class="cert-item">Google (Maharat Min Google) — Digital Marketing, Core Entrepreneurial and Business Skills</div>
+        <div class="cert-item">Dubai Center for AI Uses — AI Commands, One Million Experts Initiative</div>
+        <div class="cert-item">Niuversity — Digital Skills Programme (Productivity, UX Design, SEO, Freelancing)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="gold-line"></div>
+    <p class="section-eyebrow" style="text-align:center;">Let's Connect</p>
+    <h2 class="section-title" style="text-align:center;">Open to Opportunities</h2>
+    <p style="color: var(--muted); max-width: 500px; margin: 0 auto; text-align:center; font-size:0.95rem;">
+      Available for remote roles in AI content strategy, digital media, journalism, and communications. Open to relocation.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:alaamassoud2022@gmail.com" class="contact-link">
+        <span class="contact-link-icon">✉</span>
+        <span class="contact-link-label">Email</span>
+        <span class="contact-link-value">alaamassoud2022</span>
+      </a>
+      <a href="https://www.linkedin.com/in/alaa-masoud-b34aab339" target="_blank" class="contact-link">
+        <span class="contact-link-icon">in</span>
+        <span class="contact-link-label">LinkedIn</span>
+        <span class="contact-link-value">Alaa Masoud</span>
+      </a>
+      <a href="https://alaamasoud20237-web.github.io" target="_blank" class="contact-link">
+        <span class="contact-link-icon">⬡</span>
+        <span class="contact-link-label">Portfolio</span>
+        <span class="contact-link-value">GitHub Pages</span>
+      </a>
+      <a href="https://www.facebook.com/share/1DFWZ2VYn2/" target="_blank" class="contact-link">
+        <span class="contact-link-icon">f</span>
+        <span class="contact-link-label">Facebook</span>
+        <span class="contact-link-value">6,200+ Followers</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Alaa Masoud — Damascus, Syria &nbsp;·&nbsp; Built with purpose</p>
+</footer>
+
+<script>
+  // Typewriter
+  const phrases = [
+    "AI Content Strategist",
+    "Digital Media Specialist",
+    "Journalist & Editor",
+    "Arabic AI Content Creator",
+    "Media Psychology Researcher"
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typed');
+
+  function type() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ci + 1);
+      ci++;
+      if (ci === phrase.length) { deleting = true; setTimeout(type, 2000); return; }
+    } else {
+      el.textContent = phrase.slice(0, ci - 1);
+      ci--;
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(type, deleting ? 50 : 80);
+  }
+  setTimeout(type, 1200);
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Gold glow follows mouse
+  const glow = document.getElementById('glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+</script>
+</body>
+</html>
